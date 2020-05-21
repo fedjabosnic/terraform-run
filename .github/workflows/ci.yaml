@@ -1,0 +1,61 @@
+name: ci
+
+on:
+  pull_request:
+
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: pull code
+      uses: actions/checkout@v1
+
+    - name: setup terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 0.12.18
+
+    - name: tf init
+      id: init
+      run: terraform init -backend=false
+
+    - name: tf format
+      id: fmt
+      run: terraform fmt
+
+    - name: tf validate
+      id: validate
+      run: terraform validate
+
+    - name: tf plan
+      id: plan
+      run: terraform plan
+      
+    - name: output
+      uses: actions/github-script@0.9.0
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+          #### Terraform Validation 🤖${{ steps.validate.outputs.stdout }}
+          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+          <details><summary>Show Plan</summary>
+
+          \`\`\`${process.env.PLAN}\`\`\`
+
+          </details>
+
+          *Actor: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+          github.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
