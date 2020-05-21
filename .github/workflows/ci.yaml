@@ -39,7 +39,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         PLAN: ${{ steps.plan.outputs.stdout }}
       with:
-        msg: "```${process.env.PLAN}```"
+        msg: ${process.env.PLAN}
           
     - name: output
       uses: actions/github-script@0.9.0
