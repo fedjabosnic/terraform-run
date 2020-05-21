@@ -40,11 +40,13 @@ jobs:
         PLAN: ${{ steps.plan.outputs.stdout }}
       with:
         msg: |
-          '#### Terraform Plan \`${{ steps.plan.outcome }}\`'
+          #### Terraform Plan `${{ steps.plan.outcome }}`
 
-          '<details><summary>Show Plan</summary>'
-          '```${process.env.PLAN}````'
-          '</details>'
+          <details><summary>Show Plan</summary>
+          
+          ```${{ steps.plan.outputs.stdout }}````
+          
+          </details>
           
     - name: output
       uses: actions/github-script@0.9.0
