@@ -40,9 +40,7 @@ jobs:
         PLAN: ${{ steps.plan.outputs.stdout }}
       with:
         msg: |
-          #### Terraform Plan `${{ steps.plan.outcome }}`
-
-          <details><summary>Show Plan</summary>
+          <details><summary>`terraform plan: ${{ steps.plan.outcome }}`</summary>
           
           ```${{ steps.plan.outputs.stdout }}````
           
