@@ -27,4 +27,4 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         comment-id: ${{ github.event.comment.id }}
-        reaction-type: +1
+        reaction-type: '+1'
