@@ -27,11 +27,11 @@ jobs:
 
     - name: tf validate
       id: validate
-      run: terraform validate
+      run: terraform validate -no-color
 
     - name: tf plan
       id: plan
-      run: terraform plan
+      run: terraform plan -no-color
       
     - name: print
       uses: unsplash/comment-on-pr@master
@@ -40,7 +40,13 @@ jobs:
         PLAN: ${{ steps.plan.outputs.stdout }}
       with:
         msg: |
-          '```${{ steps.plan.outputs.stdout }}```'
+          #### Terraform Plan \`${{ steps.plan.outcome }}\`
+
+          <details><summary>Show Plan</summary>
+
+          \`\`\`${process.env.PLAN}\`\`\`
+
+          </details>
           
     - name: output
       uses: actions/github-script@0.9.0
