@@ -19,7 +19,7 @@ jobs:
 
     - name: tf init
       id: init
-      run: terraform init -backend=false
+      run: terraform init
 
     - name: tf format
       id: fmt
