@@ -9,7 +9,7 @@ jobs:
   
     name: rebase
     runs-on: ubuntu-latest
-    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase')
+    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '@bot /rebase')
 
     steps:
     - name: checkout
